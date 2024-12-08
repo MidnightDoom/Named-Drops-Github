@@ -1,0 +1,11 @@
+{
+  "item.resonant-longsword.resonant_longsword" : "Resonantes Langschwert",
+  "death.attack.resonant_longsword_strike": "%1$s wurde durch %2$s verdampft",
+  "death.attack.resonant_longsword_dash": "%1$s wurde von %2$s ins Nichts zerstreut",
+  "death.attack.block_god": "%1$s versucht, Gott zu parieren",
+  "death.attack.block_god.player": "%1$s versucht, Gott zu parieren",
+  "death.attack.resonant_longsword_strike.player": "%1$s wurde verdampft durch %2$S",
+  "death.attack.resonant_longsword_dash.player": "%1$s wurde ins Nichts zerstreut durch %2$S",
+  "death.attack.resonant_longsword_strike.item": "%1$s wurde mit %3$s um %2$s verdampft",
+  "death.attack.resonant_longsword_dash.item": "%1$s wurde von %2$s mit %3$s ins Nichts zerstreut."
+}

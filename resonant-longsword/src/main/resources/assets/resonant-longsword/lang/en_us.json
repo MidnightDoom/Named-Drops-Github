@@ -1,0 +1,11 @@
+{
+  "item.resonant-longsword.resonant_longsword": "Resonant Longsword",
+  "death.attack.resonant_longsword_strike": "%1$s was vaporized by %2$s",
+  "death.attack.resonant_longsword_dash": "%1$s was scattered into nothingness by %2$s",
+  "death.attack.block_god": "%1$s tried to parry god",
+  "death.attack.block_god.player": "%1$s tried to parry god",
+  "death.attack.resonant_longsword_strike.player": "%1$s was vaporized by %2$s",
+  "death.attack.resonant_longsword_dash.player": "%1$s was scattered into nothingness by %2$s",
+  "death.attack.resonant_longsword_strike.item": "%1$s was vaporized by %2$s using %3$s",
+  "death.attack.resonant_longsword_dash.item": "%1$s was scattered into nothingness by %2$s using %3$s"
+}

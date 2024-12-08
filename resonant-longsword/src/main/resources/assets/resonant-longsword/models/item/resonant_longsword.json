@@ -1,0 +1,63 @@
+{
+  "parent": "item/handheld",
+  "texture_size": [32, 32],
+  "textures": {
+    "layer0": "resonant-longsword:item/resonant_longsword_uncharged"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, -90, 45],
+      "translation": [0, 6.75, 1.5],
+      "scale": [1.2, 1.2, 1.2]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 90, -45],
+      "translation": [0, 6.75, 1.5],
+      "scale": [1.2, 1.2, 1.2]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -90, 45],
+      "translation": [0, 0, 0],
+      "scale": [1.2, 1.2, 1.2]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, -45],
+      "translation": [0, 0, 0],
+      "scale": [1.2, 1.2, 1.2]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "resonant-longsword:blocking": 1
+      },
+      "model": "resonant-longsword:item/blocking"
+    },
+    {
+      "predicate": {
+        "resonant-longsword:charge": 0.5
+      },
+      "model": "resonant-longsword:item/charged"
+    },
+    {
+      "predicate": {
+        "resonant-longsword:blocking": 1,
+        "resonant-longsword:charge": 0.5
+      },
+      "model": "resonant-longsword:item/blocking_charged"
+    },
+    {
+      "predicate": {
+        "resonant-longsword:charge": 1
+      },
+      "model": "resonant-longsword:item/overcharged"
+    },
+    {
+      "predicate": {
+        "resonant-longsword:blocking": 1,
+        "resonant-longsword:charge": 1
+      },
+      "model": "resonant-longsword:item/blocking_overcharged"
+    }
+  ]
+}
