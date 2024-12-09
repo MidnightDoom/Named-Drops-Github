@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.item.v1.FabricItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.EquipmentSlot;
@@ -27,31 +26,37 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ResonantSword extends SwordItem implements FabricItem {
+public class ResonantSword extends SwordItem
+{
 
-    public ResonantSword(ToolMaterial material, int attackDamage, float attackSpeed, Item.Settings settings) {
+    public ResonantSword(ToolMaterial material, int attackDamage, float attackSpeed, Item.Settings settings)
+    {
         super(material, attackDamage, attackSpeed, settings);
     }
-    
-    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+
+    public boolean allowNbtUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack)
+    {
         return false;
     }
 
     private static final int maxCharge = 60;
 
-    //modify stats based on charge
-    //deals 8 damage with 1.2 attack speed at charge < 30
-    //deals 12 damage with 1.6 attack speed at charge >= 30
-    //deals 16 damage with 2 attack speed at max charge
+    // modify stats based on charge
+    // deals 8 damage with 1.2 attack speed at charge < 30
+    // deals 12 damage with 1.6 attack speed at charge >= 30
+    // deals 16 damage with 2 attack speed at max charge
     @Environment(EnvType.CLIENT)
     @Override
-    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot) {
-        if (slot == EquipmentSlot.MAINHAND) {
+    public Multimap<EntityAttribute, EntityAttributeModifier> getAttributeModifiers(EquipmentSlot slot)
+    {
+        if (slot == EquipmentSlot.MAINHAND)
+        {
             // Access the entity and the item stack
             MinecraftClient client = MinecraftClient.getInstance();
             PlayerEntity player = client.player;
 
-            if (player != null) {
+            if (player != null)
+            {
                 ItemStack stack = player.getEquippedStack(slot);
 
                 // Retrieve the NBT from the stack
@@ -65,24 +70,27 @@ public class ResonantSword extends SwordItem implements FabricItem {
                 float extraDamage;
                 float extraAttackSpeed;
 
-                //modifiers
-                if (charge >= 60) {
+                // modifiers
+                if (charge >= 60)
+                {
                     extraDamage = 8;
                     extraAttackSpeed = 0.8F;
-                } else if (charge >= 30) {
+                }
+                else if (charge >= 30)
+                {
                     extraDamage = 4;
                     extraAttackSpeed = 0.4F;
-                } else {
+                }
+                else
+                {
                     extraDamage = 0;
                     extraAttackSpeed = 0;
                 }
 
                 // Build attribute modifiers
                 ImmutableMultimap.Builder<EntityAttribute, EntityAttributeModifier> builder = ImmutableMultimap.builder();
-                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE,
-                        new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", baseDamage + extraDamage, EntityAttributeModifier.Operation.ADDITION));
-                builder.put(EntityAttributes.GENERIC_ATTACK_SPEED,
-                        new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", baseAttackSpeed + extraAttackSpeed, EntityAttributeModifier.Operation.ADDITION));
+                builder.put(EntityAttributes.GENERIC_ATTACK_DAMAGE, new EntityAttributeModifier(ATTACK_DAMAGE_MODIFIER_ID, "Weapon modifier", baseDamage + extraDamage, EntityAttributeModifier.Operation.ADDITION));
+                builder.put(EntityAttributes.GENERIC_ATTACK_SPEED, new EntityAttributeModifier(ATTACK_SPEED_MODIFIER_ID, "Weapon modifier", baseAttackSpeed + extraAttackSpeed, EntityAttributeModifier.Operation.ADDITION));
 
                 return builder.build();
             }
@@ -91,16 +99,18 @@ public class ResonantSword extends SwordItem implements FabricItem {
         return super.getAttributeModifiers(slot);
     }
 
-    @Environment(EnvType.CLIENT)
+    // @Environment(EnvType.CLIENT)
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
+    {
         super.appendTooltip(stack, world, tooltip, context);
 
         tooltip.add(Text.literal("Can absorb some incoming energy by blocking,").formatted(Formatting.LIGHT_PURPLE));
         tooltip.add(Text.literal("and can use the energy to strengthen it's own attacks, ").formatted(Formatting.LIGHT_PURPLE));
         tooltip.add(Text.literal("or unleash it in one quick burst of speed.").formatted(Formatting.LIGHT_PURPLE));
 
-        if (stack.hasNbt() && stack.getOrCreateNbt().contains("Charge") && context.isAdvanced()) {
+        if (stack.hasNbt() && stack.getOrCreateNbt().contains("Charge") && context.isAdvanced())
+        {
             int charge = stack.getOrCreateNbt().getInt("Charge");
 
             tooltip.add(Text.literal("").formatted(Formatting.BLACK));
@@ -109,99 +119,93 @@ public class ResonantSword extends SwordItem implements FabricItem {
     }
 
     @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    {
 
-        if (target.getWorld() instanceof ServerWorld world) {
-            world.playSoundFromEntity(
-                    null,
-                    attacker,
-                    RegistryEntry.of(SoundEvents.BLOCK_BEACON_DEACTIVATE),
-                    SoundCategory.PLAYERS,
-                    0.5F,
-                    1.0F,
-                    world.random.nextLong()
-            );
-            world.playSoundFromEntity(
-                    null,
-                    attacker,
-                    RegistryEntry.of(SoundEvents.BLOCK_CONDUIT_ATTACK_TARGET),
-                    SoundCategory.PLAYERS,
-                    0.5F,
-                    1.0F,
-                    world.random.nextLong()
-            );
+        if (target.getWorld() instanceof ServerWorld world)
+        {
+            world.playSoundFromEntity(null, attacker, RegistryEntry.of(SoundEvents.BLOCK_BEACON_DEACTIVATE), SoundCategory.PLAYERS, 0.5F, 1.0F, world.random.nextLong());
+            world.playSoundFromEntity(null, attacker, RegistryEntry.of(SoundEvents.BLOCK_CONDUIT_ATTACK_TARGET), SoundCategory.PLAYERS, 0.5F, 1.0F, world.random.nextLong());
 
             Random random = target.getRandom();
-            world.spawnParticles(
-                    ParticleTypes.END_ROD,
-                    target.getX(),
-                    target.getEyeY(),
-                    target.getZ(),
-                    5,
-                    random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
-                    random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
-                    random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
-                    0.1
-            );
+            world.spawnParticles(ParticleTypes.END_ROD, target.getX(), target.getEyeY(), target.getZ(), 5, random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1), random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
+                    random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1), 0.1);
         }
 
-        if (getDashTime(stack) <= 0) {
+        if (getDashTime(stack) <= 0)
+        {
             addCharge(stack, -3);
         }
 
         return super.postHit(stack, target, attacker);
     }
 
-    //handles blocking
+    // handles blocking
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
+    {
         ItemStack stack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
         return TypedActionResult.consume(stack);
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getMaxUseTime(ItemStack stack)
+    {
         return 72000; // Allows holding right-click indefinitely
     }
 
-    public static synchronized int getCharge(ItemStack stack) {
+    public static synchronized int getCharge(ItemStack stack)
+    {
         return stack.getOrCreateNbt().getInt("Charge");
     }
 
-    public static synchronized void setCharge(ItemStack stack, int level) {
-        if (level < 0) {
+    public static synchronized void setCharge(ItemStack stack, int level)
+    {
+        if (level < 0)
+        {
             stack.getOrCreateNbt().putInt("Charge", 0);
-        } else if (level > maxCharge) {
+        }
+        else if (level > maxCharge)
+        {
             stack.getOrCreateNbt().putInt("Charge", 60);
-        } else {
+        }
+        else
+        {
             stack.getOrCreateNbt().putInt("Charge", level);
         }
     }
 
-    public static synchronized void addCharge(ItemStack stack, int level) {
+    public static synchronized void addCharge(ItemStack stack, int level)
+    {
         setCharge(stack, getCharge(stack) + level);
     }
 
-    public static synchronized void addCharge(ItemStack stack, int level, int max) {
-        if (getCharge(stack) < max) {
+    public static synchronized void addCharge(ItemStack stack, int level, int max)
+    {
+        if (getCharge(stack) < max)
+        {
             setCharge(stack, Math.min(getCharge(stack) + level, max));
         }
     }
 
-    public static synchronized int getDashTime(ItemStack stack) {
+    public static synchronized int getDashTime(ItemStack stack)
+    {
         return stack.getOrCreateNbt().getInt("Dash_Time");
     }
 
-    public static synchronized void setDashTime(ItemStack stack, int level) {
+    public static synchronized void setDashTime(ItemStack stack, int level)
+    {
         stack.getOrCreateNbt().putInt("Dash_Time", level);
     }
 
-    public static synchronized void decrementDashTime(ItemStack stack) {
+    public static synchronized void decrementDashTime(ItemStack stack)
+    {
         setDashTime(stack, getDashTime(stack) - 1);
     }
 
-    public static synchronized void resetDashTime(ItemStack stack) {
+    public static synchronized void resetDashTime(ItemStack stack)
+    {
         stack.getOrCreateNbt().putInt("Dash_Time", 0);
     }
 }
