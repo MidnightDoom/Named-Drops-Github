@@ -33,16 +33,16 @@ public abstract class BarRenderer {
             int bar2 = charge > 30 ? getBarSize(charge - 30, 30) : 0;
 
             // Calculate bar width based on the custom value
-            int barColor = charge >= 30 ? 0x6c25da : 0x3620c5;
-            int barColor2 = charge >= 60 ? 0xc72ffe : 0x9a2aed;
+            int barColor = charge >= 30 ? 0x6c25daFF : 0x3620c5FF;
+            int barColor2 = charge >= 60 ? 0xc72ffeFF : 0x9a2aedFF;
 
             int k = x + 2;
             int l = y + 13;
 
             // Draw the custom bar
             this.fill(RenderLayer.getGuiOverlay(), k, l + 1, k + 13, l + 3, Colors.BLACK);
-            this.fill(RenderLayer.getGuiOverlay(), k, l + 1, k + bar1, l + 2, barColor | Colors.BLACK);
-            this.fill(RenderLayer.getGuiOverlay(), k, l + 1, k + bar2, l + 2, barColor2 | Colors.BLACK);
+            this.fill(RenderLayer.getGuiOverlay(), k, l + 1, k + bar1, l + 2, barColor);
+            this.fill(RenderLayer.getGuiOverlay(), k, l + 1, k + bar2, l + 2, barColor2);
         }
     }
 
