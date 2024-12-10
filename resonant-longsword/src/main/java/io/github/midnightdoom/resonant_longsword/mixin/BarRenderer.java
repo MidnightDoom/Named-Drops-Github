@@ -23,8 +23,7 @@ public abstract class BarRenderer {
     @Shadow public void fill(RenderLayer layer, int x1, int y1, int x2, int y2, int color) {}
 
     @Inject(at = @At("TAIL"), method = "drawItemInSlot(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V")
-    public void resonantLongsword$chargeBar(TextRenderer textRenderer, ItemStack stack, int x, int y, @Nullable String countOverride, CallbackInfo info)
-    {
+    public void resonantLongsword$chargeBar(TextRenderer textRenderer, ItemStack stack, int x, int y, @Nullable String countOverride, CallbackInfo info) {
         if (stack.isOf(ModItems.RESONANT_LONGSWORD) && stack.hasNbt() && stack.getNbt().contains("Charge")) {
 
             int charge = ResonantSword.getCharge(stack);
@@ -33,8 +32,8 @@ public abstract class BarRenderer {
             int bar2 = charge > 30 ? getBarSize(charge - 30, 30) : 0;
 
             // Calculate bar width based on the custom value
-            int barColor = charge >= 30 ? 0x6c25daFF : 0x3620c5FF;
-            int barColor2 = charge >= 60 ? 0xc72ffeFF : 0x9a2aedFF;
+            int barColor = charge >= 30 ? 0xFF6c25da : 0xFF3620c5;
+            int barColor2 = charge >= 60 ? 0xFFc72ffe : 0xFF9a2aed;
 
             int k = x + 2;
             int l = y + 13;

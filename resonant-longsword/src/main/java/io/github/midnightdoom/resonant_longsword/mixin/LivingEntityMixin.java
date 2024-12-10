@@ -22,27 +22,32 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin
-{
+public abstract class LivingEntityMixin {
 
     @ModifyVariable(method = "addStatusEffect(Lnet/minecraft/entity/effect/StatusEffectInstance;Lnet/minecraft/entity/Entity;)Z", at = @At(value = "HEAD"), argsOnly = true)
-    public StatusEffectInstance resonantLongsword$halveDurationOnBlock(StatusEffectInstance effect)
-    {
+    public StatusEffectInstance resonantLongsword$halveDurationOnBlock(StatusEffectInstance effect) {
 
-        if (LivingEntity.class.cast(this) instanceof PlayerEntity player)
-        {
+        if (LivingEntity.class.cast(this) instanceof PlayerEntity player) {
 
             ItemStack stack = player.getMainHandStack();
 
-            if (stack.getItem() instanceof ResonantSword && player.isUsingItem() && player.getWorld() instanceof ServerWorld world)
-            {
+            if (stack.getItem() instanceof ResonantSword && player.isUsingItem() && player.getWorld() instanceof ServerWorld world) {
 
                 world.playSoundFromEntity(null, player, RegistryEntry.of(SoundEvents.ITEM_SHIELD_BLOCK), SoundCategory.PLAYERS, 0.5F, 1.5F, world.random.nextLong());
                 world.playSoundFromEntity(null, player, RegistryEntry.of(SoundEvents.BLOCK_AMETHYST_BLOCK_HIT), SoundCategory.PLAYERS, 1.5F, 0.5F, world.random.nextLong());
 
                 Random random = player.getRandom();
-                world.spawnParticles(ParticleTypes.END_ROD, player.getX(), player.getEyeY(), player.getZ(), 5, random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1), random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
-                        random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1), 0.1);
+                world.spawnParticles(
+                        ParticleTypes.END_ROD,
+                        player.getX(),
+                        player.getEyeY(),
+                        player.getZ(),
+                        5,
+                        random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
+                        random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
+                        random.nextDouble() / 20.0 * (random.nextBoolean() ? 1 : -1),
+                        0.1
+                );
 
                 ResonantSword.addCharge(stack, 3, 60);
 
@@ -53,13 +58,22 @@ public abstract class LivingEntityMixin
     }
 
     @Inject(method = "kill", at = @At(value = "HEAD"), cancellable = true)
-    public void resonantLongsword$funnyKillMessage(CallbackInfo ci)
-    {
+    public void resonantLongsword$funnyKillMessage(CallbackInfo ci) {
         PlayerEntity player = PlayerEntity.class.cast(this);
-        if (player.isUsingItem() && player.getMainHandStack().isOf(ModItems.RESONANT_LONGSWORD))
-        {
+
+        if (player.isUsingItem() && player.getMainHandStack().isOf(ModItems.RESONANT_LONGSWORD)) {
             this.damage(ModDamageTypes.of(player.getWorld(), ModDamageTypes.RESONANT_LONGSWORD_BLOCK_GOD), Float.MAX_VALUE);
             ci.cancel();
+        }
+    }
+
+    @Inject(method="tick", at = @At(value = "HEAD"))
+    public void resonantLongsword$applyLongswordEffects(CallbackInfo ci) {
+
+        LivingEntity entity = LivingEntity.class.cast(this);
+
+        if (entity.getMainHandStack().getItem() instanceof ResonantSword sword) {
+            sword.applyEffects(entity);
         }
     }
 
