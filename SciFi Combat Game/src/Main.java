@@ -3,7 +3,7 @@ import javax.swing.SwingUtilities;
 
 public class Main extends JFrame {
 
-    private static World world = new World();
+    public static World world = new World();
 
     public static void main(String[] args) throws InterruptedException {
 		Main theGUI = new Main();
@@ -31,11 +31,10 @@ public class Main extends JFrame {
 		MainPanel panel = new MainPanel();
 		
 		panel.setBounds(0, 0, 400, 400);
-		add(panel);
+		this.add(panel);
 		panel.setVisible(true);
 		this.setVisible(true);
 
-        System.out.println("All done creating our frame");
 		synchronized (semaphore) {
 			semaphore.notify();
 		}
