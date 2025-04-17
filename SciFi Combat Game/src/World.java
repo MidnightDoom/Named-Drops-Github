@@ -21,6 +21,13 @@ public class World {
         this.bodies = bodies;
     }
 
+    public World(PlanetBody[] bodies) {
+        this();
+        for (PlanetBody body : bodies) {
+            this.bodies.add(body);
+        }
+    }
+
     public World() {
         this.bodies = new ArrayList<>();
     }
