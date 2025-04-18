@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class World {
     private ArrayList<PlanetBody> bodies;
@@ -11,8 +12,8 @@ public class World {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.WHITE);
         for (PlanetBody body : this.bodies) {
+            g.setColor(Color.WHITE);
             body.paint((Graphics2D) g);
         }
     }
@@ -30,6 +31,11 @@ public class World {
 
     public World() {
         this.bodies = new ArrayList<>();
+    }
+
+    public World(PlanetBody[] bodies) {
+        this();
+        Collections.addAll(this.bodies, bodies);
     }
 
     public void addBody(PlanetBody planetBody) {
