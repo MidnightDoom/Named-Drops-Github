@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "io.github.midnightdoom.named_drops.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"NamedMobLoot",
+		"PlayerDrops"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
